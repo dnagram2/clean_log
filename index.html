@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>청소업체 모바일 명함</title>
+    <style>
+        /* 기본 초기화 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f5f7;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* 모바일 컨테이너 */
+        .mobile-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #ffffff;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 상단 프로필 및 배경 영역 */
+        .header-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=600&auto=format&fit=crop') center/cover;
+            height: 380px;
+            position: relative;
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        /* 문의전화 버튼 */
+        .call-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: white;
+            color: #d81b60;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        /* 프로필 정보 */
+        .profile-info {
+            margin-bottom: 15px;
+        }
+        .profile-info h1 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+        .profile-info span {
+            font-size: 14px;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        /* 소개 문구 */
+        .quote-box {
+            background-color: rgba(60, 72, 107, 0.85);
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            line-height: 1.6;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .quote-box::before, .quote-box::after {
+            content: '"';
+            font-size: 24px;
+            font-family: serif;
+            position: absolute;
+            color: rgba(255,255,255,0.4);
+        }
+        .quote-box::before { top: 5px; left: 10px; }
+        .quote-box::after { bottom: -5px; right: 10px; }
+        .quote-box strong {
+            font-size: 15px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* 하단 메인 콘텐츠 영역 */
+        .main-content {
+            background-color: white;
+            border-radius: 20px 20px 0 0;
+            margin-top: -20px;
+            position: relative;
+            padding: 30px 20px;
+            z-index: 10;
+        }
+
+        /* 주요 기능 버튼 */
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+            font-size: 12px;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .action-btn .icon-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #f5f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            transition: 0.2s;
+        }
+        .action-btn.share .icon-circle {
+            border: 2px solid #e91e63;
+            background-color: white;
+            color: #e91e63;
+        }
+        .action-btn.share span {
+            color: #e91e63;
+            font-weight: bold;
+        }
+
+        /* 전문분야 탭 */
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .tag {
+            background-color: #fcf0f2;
+            color: #555;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        /* 계산기 스타일 */
+        #calculator-section {
+            display: none;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #eee;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .calc-container {
+            background-color: #f4f6f9;
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .brand-header h1 {
+            color: #1e3a8a;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .brand-header p {
+            color: #6b7280;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+        .input-group label {
+            display: block;
+            color: #374151;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .input-wrapper input {
+            width: 100%;
+            padding: 10px 40px 10px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
+            color: #111827;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            text-align: right;
+        }
+        .input-wrapper input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .input-wrapper input::-webkit-outer-spin-button,
+        .input-wrapper input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .input-wrapper .unit {
+            position: absolute;
+            right: 16px;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        .result-box {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 25px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+        .result-box .title {
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .result-box .price {
+            font-size: 22px;
+            color: #2563eb;
+            font-weight: 800;
+        }
+        .notice {
+            font-size: 11px;
+            color: #94a3b8;
+            text-align: center;
+            margin-top: 15px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+<div class="mobile-container">
+    <!-- 상단 배경 및 프로필 -->
+    <div class="header-section">
+        <a href="tel:010-1234-5678" class="call-btn">📞 문의전화</a>
+        
+        <div class="profile-info">
+            <h1>허용무 <span>대표 | 궁마스터케어</span></h1>
+        </div>
+        
+        <div class="quote-box">
+            <strong>프리미엄 청소 전문가 허용무 입니다.</strong>
+            눈에 보이지 않는 오염 마저 청소하며<br>
+            고객님 공간을 궁궐처럼 케어합니다.<br>
+            고객님의 공간을 내 집처럼 여기겠다는 초심을 지켜나가겠습니다.
+        </div>
+    </div>
+
+    <!-- 메인 기능 및 정보 영역 -->
+    <div class="main-content">
+        <!-- 4가지 주요 기능 버튼 -->
+        <div class="action-buttons">
+            <a href="#" class="action-btn share" onclick="alert('명함 링크가 복사되었습니다!'); return false;">
+                <div class="icon-circle">🔗</div>
+                <span>공유</span>
+            </a>
+            <a href="#" class="action-btn" onclick="toggleCalculator(); return false;">
+                <div class="icon-circle">📝</div>
+                <span>견적 보기</span>
+            </a>
+
+            <!-- 포트폴리오 링크 수정 (실제 링크 주소로 변경해주세요) -->
+            <a href="https://www.threads.com/@gungmaster_care?igshid=NTc4MTIwNjQ2YQ==" target="_blank" class="action-btn">
+                <div class="icon-circle">🖼️</div>
+                <span>포트폴리오</span>
+            </a>
+            
+            <!-- 블로그 링크 수정 (실제 링크 주소로 변경해주세요) -->
+            <a href="https://blog.naver.com/crean_log" target="_blank" class="action-btn">
+                <div class="icon-circle">🌐</div>
+                <span>블로그</span>
+            </a>
+        </div>
+
+        <!-- 전문분야 -->
+        <h2 class="section-title">전문분야</h2>
+        <div class="tags-container">
+            <span class="tag">입주청소</span>
+            <span class="tag">이사청소</span>
+            <span class="tag">거주청소</span>
+            <span class="tag">상가/사무실</span>
+            <span class="tag">에어컨 분해청소</span>
+            <span class="tag">쓰레기집 특수청소</span>
+        </div>
+
+        <!-- 숨겨진 계산기 영역 -->
+        <div id="calculator-section">
+            <div class="calc-container">
+                <div class="brand-header">
+                    <h1>궁마스터 케어 견적 계산기</h1>
+                    <p>고객님댁 조건을 입력하시면<br>예상 금액을 바로 확인할 수 있습니다.</p>
+                </div>
+
+                <div class="input-group">
+                    <label for="area">공급면적 (평당 15,000원)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="area" min="0" placeholder="0" oninput="calculateQuote()">
+                        <span class="unit">평</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="room">방 개수 (개당 5,000원)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="room" min="0" placeholder="0" oninput="calculateQuote()">
+                        <span class="unit">개</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="veranda">베란다 (개당 50,000원)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="veranda" min="0" placeholder="0" oninput="calculateQuote()">
+                        <span class="unit">개</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="utility">다용도실 (개당 30,000원)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="utility" min="0" placeholder="0" oninput="calculateQuote()">
+                        <span class="unit">개</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="pantry">팬트리 (개당 30,000원)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="pantry" min="0" placeholder="0" oninput="calculateQuote()">
+                        <span class="unit">개</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="terrace">테라스 (개당 70,000원)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="terrace" min="0" placeholder="0" oninput="calculateQuote()">
+                        <span class="unit">개</span>
+                    </div>
+                </div>
+
+                <div class="result-box">
+                    <div class="title">예상 견적 금액</div>
+                    <div class="price" id="total-price">0 원입니다.</div>
+                </div>
+
+                <div class="notice">
+                    * 본 견적은 이해를 돕기 위한 예상 금액이며,<br>현장 상황에 따라 실제 견적과 차이가 발생할 수 있습니다.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 계산기 보이기/숨기기 함수
+    function toggleCalculator() {
+        const calcSection = document.getElementById('calculator-section');
+        
+        if (calcSection.style.display === 'none' || calcSection.style.display === '') {
+            calcSection.style.display = 'block';
+            setTimeout(() => {
+                calcSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        } else {
+            calcSection.style.display = 'none';
+        }
+    }
+
+    // 견적 계산 함수
+    function calculateQuote() {
+        const area = parseInt(document.getElementById('area').value) || 0;
+        const room = parseInt(document.getElementById('room').value) || 0;
+        const veranda = parseInt(document.getElementById('veranda').value) || 0;
+        const utility = parseInt(document.getElementById('utility').value) || 0;
+        const pantry = parseInt(document.getElementById('pantry').value) || 0;
+        const terrace = parseInt(document.getElementById('terrace').value) || 0;
+
+        const total = (area * 15000) + 
+                      (room * 5000) + 
+                      (veranda * 50000) + 
+                      (utility * 30000) + 
+                      (pantry * 30000) + 
+                      (terrace * 70000);
+
+        document.getElementById('total-price').innerText = total.toLocaleString() + " 원입니다.";
+    }
+</script>
+
+</body>
+</html>
