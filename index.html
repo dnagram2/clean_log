@@ -317,7 +317,7 @@
             </a>
             
             <!-- 블로그 링크 수정 (실제 링크 주소로 변경해주세요) -->
-            <a href="https://blog.naver.com/clean_log" target="_blank" class="action-btn">
+            <a href="https://blog.naver.com/sward1210">
                 <div class="icon-circle">🌐</div>
                 <span>블로그</span>
             </a>
@@ -329,9 +329,12 @@
             <span class="tag">입주청소</span>
             <span class="tag">이사청소</span>
             <span class="tag">거주청소</span>
+            <span class="tag">어닝청소</span>
+            <span class="tag">쇼윈도 청소</span>
             <span class="tag">상가/사무실</span>
             <span class="tag">에어컨 분해청소</span>
-            <span class="tag">쓰레기집 특수청소</span>
+            <span class="tag">쓰레기집 청소</span>
+            <span class="tag">고독사 현장청소</span>
         </div>
 
         <!-- 숨겨진 계산기 영역 -->
@@ -343,7 +346,7 @@
                 </div>
 
                 <div class="input-group">
-                    <label for="area">공급면적 (평당 20,000원)</label>
+                    <label for="area">공급면적 (평당 25,000원)</label>
                     <div class="input-wrapper">
                         <input type="number" id="area" min="0" placeholder="0" oninput="calculateQuote()">
                         <span class="unit">평</span>
@@ -351,15 +354,7 @@
                 </div>
 
                 <div class="input-group">
-                    <label for="room">방 개수 (개당 5,000원)</label>
-                    <div class="input-wrapper">
-                        <input type="number" id="room" min="0" placeholder="0" oninput="calculateQuote()">
-                        <span class="unit">개</span>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <label for="veranda">베란다 (개당 50,000원)</label>
+                    <label for="veranda">베란다 (개당 100,000원)</label>
                     <div class="input-wrapper">
                         <input type="number" id="veranda" min="0" placeholder="0" oninput="calculateQuote()">
                         <span class="unit">개</span>
@@ -367,7 +362,7 @@
                 </div>
 
                 <div class="input-group">
-                    <label for="utility">다용도실 (개당 30,000원)</label>
+                    <label for="utility">다용도실(세탁실) (개당 50,000원)</label>
                     <div class="input-wrapper">
                         <input type="number" id="utility" min="0" placeholder="0" oninput="calculateQuote()">
                         <span class="unit">개</span>
@@ -383,7 +378,7 @@
                 </div>
 
                 <div class="input-group">
-                    <label for="terrace">테라스 (개당 70,000원)</label>
+                    <label for="terrace">테라스 (개당 150,000원)</label>
                     <div class="input-wrapper">
                         <input type="number" id="terrace" min="0" placeholder="0" oninput="calculateQuote()">
                         <span class="unit">개</span>
@@ -427,12 +422,11 @@
         const pantry = parseInt(document.getElementById('pantry').value) || 0;
         const terrace = parseInt(document.getElementById('terrace').value) || 0;
 
-        const total = (area * 15000) + 
-                      (room * 5000) + 
-                      (veranda * 50000) + 
-                      (utility * 30000) + 
+        const total = (area * 25000) + 
+                      (veranda * 100000) + 
+                      (utility * 50000) + 
                       (pantry * 30000) + 
-                      (terrace * 70000);
+                      (terrace * 150000);
 
         document.getElementById('total-price').innerText = total.toLocaleString() + " 원입니다.";
     }
